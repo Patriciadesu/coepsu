@@ -13,33 +13,48 @@ public class Jumping : Obstruction
 
     public override void Start()
     {
-        
         characterController = this.GetComponent<CharacterController>();
     }
 
     public override void Move()
     {
+        Debug.Log(direction);
         Vector3 right = transform.TransformDirection(Vector3.right);
-        float moveSpeed =  speed * direction;
-        float movementDirectionY = moveDirection.y;
-        moveDirection = (right * moveSpeed);
-        Debug.Log(moveDirection.x);
-        moveDirection = new Vector3(moveDirection.x, moveDirection.y, 0);
+        float moveSpeed = speed;
+
+        // Horizontal movement
+        moveDirection.x = moveSpeed;
 
         if (characterController.isGrounded)
         {
-            moveDirection.y = jumpForce;
+            isGround = true;
+
+            // Jumping logic
+            if (jumpForce > 0)
+            {
+                moveDirection.y = jumpForce;
+            }
+            else
+            {
+                moveDirection.y = -1f; // Small downward force to keep grounded
+            }
         }
         else
         {
-            moveDirection.y = movementDirectionY;
-        }
-        if (!characterController.isGrounded)
-        {
+            isGround = false;
+
+            // Apply gravity when not grounded
             moveDirection.y -= gravity * Time.deltaTime;
         }
-
+        if (direction == -1)
+        {
+            moveDirection.x = Mathf.Abs(moveDirection.x) * -1; // Ensure negative direction
+        }
+        else
+        {
+            moveDirection.x = Mathf.Abs(moveDirection.x); // Ensure positive direction
+        }
+        // Move the character controller
         characterController.Move(moveDirection * Time.deltaTime);
     }
-
 }

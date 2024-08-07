@@ -17,6 +17,7 @@ public class ObstructionSpawner : MonoBehaviour
     private void Start()
     {
         StartCoroutine(BarrelSpawn());
+        StartCoroutine(JumperSpawn());
     }
 
 
@@ -28,10 +29,18 @@ public class ObstructionSpawner : MonoBehaviour
             Instantiate(barrel, RandomSpawnPoint(), Quaternion.identity);
         }
     }
+    IEnumerator JumperSpawn()
+    {
+        while (true)
+        {
+            yield return new WaitForSeconds(RandomSpawnTime(jumperSpawnInterval));
+            Instantiate(Jumper, RandomSpawnPoint(), Quaternion.identity);
+        }
+    }
 
     float RandomSpawnTime(float interval)
     {
-        return Random.Range(0.3f, interval);
+        return Random.Range(0.5f, interval);
     }
     Vector3 RandomSpawnPoint()
     {
