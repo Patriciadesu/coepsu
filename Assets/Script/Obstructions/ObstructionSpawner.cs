@@ -4,15 +4,40 @@ using UnityEngine;
 
 public class ObstructionSpawner : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
+    public GameObject barrel;
+    public float barrelSpawnInterval;
+    public GameObject Jumper;
+    public float jumperSpawnInterval;
+    public GameObject follow;
+    public int maxFollow;
+    public float followSpawnInterval;
+
+    public GameObject[] spawnPoint;
+
+    private void Start()
     {
-        
+        StartCoroutine(BarrelSpawn());
     }
 
-    // Update is called once per frame
-    void Update()
+
+    IEnumerator BarrelSpawn()
     {
-        
+        while (true)
+        {
+            yield return new WaitForSeconds(RandomSpawnTime(barrelSpawnInterval));
+            Instantiate(barrel, RandomSpawnPoint(), Quaternion.identity);
+        }
     }
+
+    float RandomSpawnTime(float interval)
+    {
+        return Random.Range(0.3f, interval);
+    }
+    Vector3 RandomSpawnPoint()
+    {
+        int index = Random.Range(0, 2);
+        return spawnPoint[index].transform.position;
+    }
+
+
 }

@@ -34,7 +34,7 @@ public class Jumping : Obstruction
         {
             moveDirection.y = movementDirectionY;
         }
-        if (!isGround)
+        if (!characterController.isGrounded)
         {
             moveDirection.y -= gravity * Time.deltaTime;
         }

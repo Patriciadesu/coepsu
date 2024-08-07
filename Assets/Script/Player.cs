@@ -26,12 +26,12 @@ public class Player : Singleton<Player>
     }
     [SerializeField] Item noItem;
 
-    [HideInInspector]public float externalForce;
-    [HideInInspector] public bool canJump = true;
-    [HideInInspector] public bool canClimb = true;
-    [HideInInspector] public bool canCrouch = true;
-    [HideInInspector]public Rigidbody rigidbody;
-    [HideInInspector]public Animator animator;
+    public float externalForce;
+    public bool canJump = true;
+    public bool canClimb = true;
+    public bool canCrouch = true;
+    public Rigidbody rigidbody;
+    public Animator animator;
 
     #region MovementProperty
     public bool isGround;
@@ -72,6 +72,10 @@ public class Player : Singleton<Player>
         {
             EquipItem(itemHolder);
         }
+        if (other.gameObject.tag == "win")
+        {
+            GameManager.Instance.NextLevel();
+        }
         
     }
     private void OnTriggerStay(Collider other)
@@ -97,10 +101,10 @@ public class Player : Singleton<Player>
     public void Move()
     {
         if (canMove) {
-            // We are grounded, so recalculate move direction based on axes
+            
             Vector3 forward = transform.TransformDirection(Vector3.forward);
             Vector3 right = transform.TransformDirection(Vector3.right);
-            // Press Left Shift to run
+            
             float curSpeedX = canMove ? speed * Input.GetAxis("Vertical") : 0;
             float curSpeedY = canMove ? speed * Input.GetAxis("Horizontal") : 0;
             float movementDirectionY = moveDirection.y;
@@ -169,7 +173,7 @@ public class Player : Singleton<Player>
     {
         if (CurrentItem != noItem)
         {
-            Rigidbody item = Instantiate(CurrentItem.prefab, this.transform.position, Quaternion.identity).AddComponent<Rigidbody>();
+            Rigidbody item = Instantiate(CurrentItem.prefab, this.transform.position+(transform.up*2), Quaternion.identity).AddComponent<Rigidbody>();
             item.AddForce(item.gameObject.transform.up * unequipForce, ForceMode.Impulse);
             CurrentItem = noItem;
         }
