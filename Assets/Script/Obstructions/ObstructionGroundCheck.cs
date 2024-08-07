@@ -30,7 +30,7 @@ public class ObstructionGroundCheck : MonoBehaviour
                 }
                 else 
                 {
-                    follow.isClimbing = true;
+                    Debug.Log("Doing That");
                     follow.accessFromTop = ladder.IsAcessFromTop(follow.gameObject);
                 }
             }

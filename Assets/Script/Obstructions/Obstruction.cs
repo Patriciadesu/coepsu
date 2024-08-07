@@ -54,7 +54,7 @@ public class Obstruction : MonoBehaviour
 
     public void SelfDestruct()
     {
-        StartCoroutine(Destructing());
+        Destroy(this.gameObject);
     }
     IEnumerator Destructing()
     {

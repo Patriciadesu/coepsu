@@ -1,0 +1,1 @@
+I suggest using the .fbx file for the main model as the .dae has rigging issues exclusive to Blender.

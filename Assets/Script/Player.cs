@@ -85,6 +85,10 @@ public class Player : Singleton<Player>
         {
             EquipItem(itemHolder);
         }
+        if (other.gameObject.TryGetComponent<boss>(out boss Boss))
+        {
+            GameManager.Instance.ResetLevel();
+        }
         if (other.gameObject.tag == "win")
         {
             GameManager.Instance.NextLevel();
@@ -145,14 +149,12 @@ public class Player : Singleton<Player>
             characterController.Move(moveDirection * Time.deltaTime);
 
             // Player and Camera rotation
-            if (canMove)
-            {
-                rotationX += -Input.GetAxis("Mouse Y") * lookSpeed;
-                rotationX = Mathf.Clamp(rotationX, -lookXLimit, lookXLimit);
-                playerCamera.transform.localRotation = Quaternion.Euler(rotationX, 0, 0);
-                transform.rotation *= Quaternion.Euler(0, Input.GetAxis("Mouse X") * lookSpeed, 0);
-            }
         }
+        rotationX += -Input.GetAxis("Mouse Y") * lookSpeed;
+        rotationX = Mathf.Clamp(rotationX, -lookXLimit, lookXLimit);
+        playerCamera.transform.localRotation = Quaternion.Euler(rotationX, 0, 0);
+        transform.rotation *= Quaternion.Euler(0, Input.GetAxis("Mouse X") * lookSpeed, 0);
+        
     }
     
     public void Crouch()
@@ -192,13 +194,13 @@ public class Player : Singleton<Player>
     }
     public void Die()
     {
-        StartCoroutine(Dying());
+        GameManager.Instance.ResetLevel();
     }
     private IEnumerator Dying()
     {
         animator.SetTrigger("isDying");
         yield return new WaitForSeconds(animator.GetCurrentAnimatorStateInfo(0).length);
-        GameManager.Instance.ResetLevel();
+        
     }
 
 
@@ -212,6 +214,7 @@ public class Player : Singleton<Player>
     public void ExitClimbState()
     {
         EnableAction();
+        isClimbing = false;
     }
     public void DisableAction()
     {
