@@ -23,6 +23,7 @@ public class GameManager : SingletonPersistent<GameManager>
     }
 
     private int lives = 4;
+
     public int Lives
     {
         get

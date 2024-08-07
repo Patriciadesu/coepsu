@@ -66,7 +66,7 @@ public class Player : Singleton<Player>
         {
             UnEquipItem();
         }
-        if (Input.GetKeyDown(KeyCode.F)&& canClimb)
+        if (Input.GetKeyDown(KeyCode.F)&& canClimb && isLadderInFront)
         {
             isClimbing = true;
             EnterClimbState();
