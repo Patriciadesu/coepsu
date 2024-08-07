@@ -18,21 +18,22 @@ public class GameManager : SingletonPersistent<GameManager>
         set
         {
             currentLevel = value;
-            sceneName = "Level" + value.ToString();
+            sceneName = "Level_" + value.ToString();  // Added underscore to match scene names
         }
     }
 
-    private int live = 4;
-    public int Live
+    private int lives = 1;
+    public int Lives
     {
         get
         {
-            return live;
+            return lives;
         }
         set
         {
-            live = value;
-            if (live < 0)
+            lives = value;
+            Debug.Log("Lives Remaining: " + lives.ToString());
+            if (lives <= 0)  // Trigger game over when lives are 0
             {
                 GameOver();
             }
@@ -42,26 +43,32 @@ public class GameManager : SingletonPersistent<GameManager>
     public int score;
     public float time;
 
-    public void Update()
+    private void Update()
     {
         time += Time.deltaTime;
     }
 
     public void ResetLevel()
     {
-        Live -= 1;
-        SceneManager.LoadScene(sceneName);
-        time = 0;
-    }
-    public void NextLevel()
-    {
-        try
+        Lives -= 1;
+        if (lives > 0)
         {
-            CurrentLevel += 1;
             SceneManager.LoadScene(sceneName);
             time = 0;
         }
-        catch (Exception e)
+    }
+
+    public void NextLevel()
+    {
+        CurrentLevel += 1;
+        string nextSceneName = "Level_" + CurrentLevel.ToString();
+
+        if (Application.CanStreamedLevelBeLoaded(nextSceneName))
+        {
+            SceneManager.LoadScene(nextSceneName);
+            time = 0;
+        }
+        else
         {
             Win();
         }
@@ -77,4 +84,10 @@ public class GameManager : SingletonPersistent<GameManager>
         SceneManager.LoadScene("Win");
     }
 
+    public void ResetGame()
+    {
+        CurrentLevel = 1;  // Start from Level 1
+        Lives = 4;
+        ResetLevel();
+    }
 }
