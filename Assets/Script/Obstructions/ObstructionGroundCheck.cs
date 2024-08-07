@@ -22,6 +22,13 @@ public class ObstructionGroundCheck : MonoBehaviour
                 if (follow.isClimbing)
                 {
                     follow.isClimbing = false;
+                    follow.previousLadder = ladder.gameObject;
+                    follow.currentLadder = null;
+                }
+                else if(ladder == follow.currentLadder)
+                {
+                    follow.isClimbing = true;
+                    follow.accessFromTop = ladder.IsAcessFromTop(follow.gameObject);
                 }
             }
 

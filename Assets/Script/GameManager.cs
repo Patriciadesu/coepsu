@@ -7,7 +7,7 @@ using UnityEngine.SceneManagement;
 public class GameManager : SingletonPersistent<GameManager>
 {
     private int currentLevel = 2;
-    private string sceneName = "Level_1";
+    private string sceneName = "Level_2";
 
     public int CurrentLevel
     {

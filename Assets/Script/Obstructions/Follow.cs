@@ -6,11 +6,13 @@ using UnityEngine.EventSystems;
 
 public class Follow : Obstruction
 {
+    public float climbSpeed = 5f;
     public GameObject currentLadder;
     public GameObject previousLadder;
     public GameObject[] unableToGo = { };
     public CharacterController characterController;
     public bool isClimbing = false;
+    public bool accessFromTop;
 
     public override void Start()
     {
@@ -21,11 +23,13 @@ public class Follow : Obstruction
     bool CheckIfSameFloor(GameObject target)
     {
         float currentFloor = this.transform.position.y;
+        float targetFloor = target.transform.position.y;
         if(target.TryGetComponent<Ladder>(out Ladder ladder))
         {
-            currentFloor += target.transform.lossyScale.y / 2;
+            if(ladder.IsAcessFromTop(this.gameObject))targetFloor += target.transform.lossyScale.y / 2;
+            else targetFloor -= target.transform.lossyScale.y / 2;
         }
-        float targetFloor = target.transform.position.y;
+        Debug.Log("Target's lossy" + targetFloor);
         float distance = Mathf.Abs(targetFloor - currentFloor);
         return distance < floorInterval;
     }
@@ -100,7 +104,11 @@ public class Follow : Obstruction
         }
         if (isClimbing)
         {
-
+            int direction = 0;
+            if (accessFromTop) direction = -1;
+            else direction = 1;
+            float yAxis = this.transform.position.y;
+            this.transform.position = new Vector3(this.transform.position.x, yAxis + (climbSpeed * Time.deltaTime * direction), this.transform.position.z);
         }
     }
 }
