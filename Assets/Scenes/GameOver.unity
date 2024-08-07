@@ -154,6 +154,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0ab63d26c553a41fba50b8f36c2bd9ce, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  menuImage:
+  - {fileID: 876333670, guid: 2bd93cd889f70451f955b2d9dc949b81, type: 3}
+  - {fileID: -1215739908, guid: 2bd93cd889f70451f955b2d9dc949b81, type: 3}
+  - {fileID: 1706727633, guid: 2bd93cd889f70451f955b2d9dc949b81, type: 3}
+  image: {fileID: 773847159}
+  menuIndex: 0
 --- !u!114 &482202231
 MonoBehaviour:
   m_ObjectHideFlags: 0

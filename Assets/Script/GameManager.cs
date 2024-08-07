@@ -22,7 +22,7 @@ public class GameManager : SingletonPersistent<GameManager>
         }
     }
 
-    private int lives = 1;
+    private int lives = 4;
     public int Lives
     {
         get
