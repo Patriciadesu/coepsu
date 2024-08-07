@@ -7,9 +7,10 @@ public class SecondLevelManager : MonoBehaviour
     public Animator anim;
     void Update()
     {
-        if (FindObjectsOfType<VanishFloor>() == null)
+        if (FindObjectsOfType<VanishFloor>().Length == 0)
         {
-            anim.SetTrigger("Win"); 
+            Debug.Log("Win");
+            anim.SetTrigger("win"); 
         }   
     }
     public void NextLevel()
