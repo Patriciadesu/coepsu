@@ -23,30 +23,23 @@ public class GroundCheck : MonoBehaviour
         if (other.gameObject.TryGetComponent<Ladder>(out Ladder ladder))
         {
             Debug.Log("found ladder");
-            if (ladder.isPlayerOnLadder)
+            if (Player.Instance.isClimbing)
             {
                 Debug.Log("Exit State");
                 ladder.isPlayerOnLadder = false;
                 Player.Instance.ExitClimbState();
             }
-            else if(Input.GetKeyDown(KeyCode.F))
+            else
             {
-                Player.Instance.EnterClimbState();
-                Player.Instance.Climb(ladder.gameObject);
-                ladder.isPlayerOnLadder = true;
+                Player.Instance.isLadderInFront = true;
             }
         }
     }
-    private void OnTriggerStay(Collider other)
+    private void OnTriggerExit(Collider other)
     {
         if (other.gameObject.TryGetComponent<Ladder>(out Ladder ladder))
         {
-            if (Input.GetKeyDown(KeyCode.F))
-            {
-                Player.Instance.EnterClimbState();
-                Player.Instance.Climb(ladder.gameObject);
-                ladder.isPlayerOnLadder = true;
-            }
+            Player.Instance.isLadderInFront = false;
         }
     }
 }

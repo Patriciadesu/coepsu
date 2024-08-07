@@ -30,6 +30,8 @@ public class Player : Singleton<Player>
     public bool canJump = true;
     public bool canClimb = true;
     public bool canCrouch = true;
+    public bool isClimbing = false;
+    public bool isLadderInFront = false;
     public Rigidbody rigidbody;
     public Animator animator;
 
@@ -64,6 +66,17 @@ public class Player : Singleton<Player>
         {
             UnEquipItem();
         }
+        if (Input.GetKeyDown(KeyCode.F)&& canClimb)
+        {
+            isClimbing = true;
+            EnterClimbState();
+        }
+
+        if (isClimbing)
+        {
+            Climb();
+        }
+
     }
 
     private void OnTriggerEnter(Collider other)
@@ -149,14 +162,13 @@ public class Player : Singleton<Player>
 
         }
     }
-    public void Climb(GameObject ladder)
+    public void Climb()
     {
         if (canClimb)
         {
             float direction = Input.GetAxis("Vertical");
-            float hight = ladder.transform.lossyScale.y;
             float yAxis = this.transform.position.y;
-            this.transform.position = new Vector3(this.transform.position.x, yAxis + ((hight / climbSpeed) * Time.deltaTime * direction), this.transform.position.z);
+            this.transform.position = new Vector3(this.transform.position.x, yAxis + (climbSpeed * Time.deltaTime * direction), this.transform.position.z);
         }
     }
 
