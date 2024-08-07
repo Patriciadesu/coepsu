@@ -5,7 +5,7 @@ using UnityEngine;
 public class ObstructionGroundCheck : MonoBehaviour
 {
 
-    Obstruction parent;
+    public Obstruction parent;
 
     private void Start()
     {
@@ -14,10 +14,13 @@ public class ObstructionGroundCheck : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
+        Debug.Log("ENTER");
         if(other.TryGetComponent<Ladder>(out Ladder ladder))
         {
+            Debug.Log("Follow Found Ladder");
             if(parent is Follow)
             {
+                Debug.Log("This Is Follow");
                 Follow follow = parent as Follow;
                 if (follow.isClimbing)
                 {
@@ -25,7 +28,7 @@ public class ObstructionGroundCheck : MonoBehaviour
                     follow.previousLadder = ladder.gameObject;
                     follow.currentLadder = null;
                 }
-                else if(ladder == follow.currentLadder)
+                else 
                 {
                     follow.isClimbing = true;
                     follow.accessFromTop = ladder.IsAcessFromTop(follow.gameObject);

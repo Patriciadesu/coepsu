@@ -29,6 +29,10 @@ public class Follow : Obstruction
             if(ladder.IsAcessFromTop(this.gameObject))targetFloor += target.transform.lossyScale.y / 2;
             else targetFloor -= target.transform.lossyScale.y / 2;
         }
+        else if (target.TryGetComponent<Player>(out Player player))
+        {
+            targetFloor = FindObjectOfType<GroundCheck>().transform.position.y;
+        }
         Debug.Log("Target's lossy" + targetFloor);
         float distance = Mathf.Abs(targetFloor - currentFloor);
         return distance < floorInterval;
@@ -104,11 +108,14 @@ public class Follow : Obstruction
         }
         if (isClimbing)
         {
-            int direction = 0;
-            if (accessFromTop) direction = -1;
-            else direction = 1;
-            float yAxis = this.transform.position.y;
-            this.transform.position = new Vector3(this.transform.position.x, yAxis + (climbSpeed * Time.deltaTime * direction), this.transform.position.z);
+            characterController.Move(Vector3.zero); // Stop horizontal movement when climbing
+            int direction = accessFromTop ? -1 : 1;
+            this.transform.position += new Vector3(0, climbSpeed * Time.deltaTime * direction, 0);
+
+            if (Mathf.Abs(this.transform.position.y - currentLadder.transform.position.y) > currentLadder.transform.lossyScale.y / 2)
+            {
+                isClimbing = false; // Stop climbing when reaching the top/bottom of the ladder
+            }
         }
     }
 }
