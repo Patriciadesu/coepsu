@@ -20,8 +20,12 @@ public class Follow : Obstruction
 
     bool CheckIfSameFloor(GameObject target)
     {
-        float targetFloor = target.transform.position.y;
         float currentFloor = this.transform.position.y;
+        if(target.TryGetComponent<Ladder>(out Ladder ladder))
+        {
+            currentFloor += target.transform.lossyScale.y / 2;
+        }
+        float targetFloor = target.transform.position.y;
         float distance = Mathf.Abs(targetFloor - currentFloor);
         return distance < floorInterval;
     }
